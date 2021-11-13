@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  web:
+    build: ./sunflower
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --no-input --clear && python manage.py runserver 0.0.0.0:8000 && python manage.py loaddata db.json"
+    volumes:
+      - ./sunflower:/usr/src/app/
+    ports:
+      - 80:8000
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=%w)@uuqcw8_0nx1o1o$lopy@fb+=u4pkoca^m01s02=l1ns+v=
+      - DJANGO_ALLOWED_HOSTS=*
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+    depends_on:
+      - redis
+  celery:
+    build: ./sunflower
+    command: celery -A sunflower worker  --loglevel=info
+    volumes:
+      - ./sunflower:/usr/src/app
+    environment:
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+    depends_on:
+      - web
+      - redis
+  redis:
+    image: redis:6-alpine
+
+  dashboard:
+    build: ./sunflower
+    command:  celery flower --port=5555
+    ports:
+      - 5555:5555
+    environment:
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+    depends_on:
+      - web
+      - redis
+      - celery
