@@ -6,9 +6,11 @@
 ## Клонируем репозиторий:
 ~~~  
 git clone https://github.com/kamna2021/agrohack 
-cd else
+cd agrohack
 ~~~
 
 ### Установка docker
 
 Для работы необходим Docker. С инструкцией по установке можно ознакомиться <a target='_blank' href='https://docs.docker.com/compose/install/'>здесь</a>
+
+### 
