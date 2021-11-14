@@ -16,7 +16,7 @@ class Flower(models.Model):
     type_flower = models.ForeignKey("core.TypeFlower", on_delete=models.CASCADE, related_name="flowers", verbose_name="Тип растения")
     photo = models.FileField(upload_to="flowers/")
     place=models.ForeignKey("core.Place", on_delete=models.CASCADE, related_name="flowers", verbose_name="Местоположение")
-
+    count=models.IntegerField(verbose_name="Количество семян", default=0)
     def __str__(self) -> str:
         return f"{self.type_flower}: {self.weihgt}"
 
@@ -25,6 +25,7 @@ class Place(models.Model):
     """ Поле """
     name = models.CharField(verbose_name="Наименвоание", max_length=1000)
     square = models.FloatField(verbose_name="Площадь", max_length=0.0) 
+    organiztion = models.ForeignKey("core.Organization", on_delete=models.CASCADE, related_name="places", verbose_name="Организация", null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.name}"
@@ -44,3 +45,10 @@ class Audit(models.Model):
     def calc(self) -> None:
         """ Заглушка для расчета урожайности """
         return None
+
+
+class Organization(models.Model):
+    """ Агропредприятие """
+
+    inn = models.CharField(verbose_name="ИНН", max_length=20)
+    short_name  = models.CharField(verbose_name="Короткое наименование", max_length=200)

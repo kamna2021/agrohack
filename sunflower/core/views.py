@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 
 from core.models import Audit, Flower, Place, TypeFlower
-from core.serializers import AuditSerializer, FlowerSerializer, PlaceSerializer, TypeFlowerSerializer
+from core.serializers import AuditSerializer, FlowerSerializer, PlaceSerializer, TypeFlowerSerializer, OrganizationSerializer, Organization
 
 class TypeFlowerViewSet(viewsets.ModelViewSet):
     queryset = TypeFlower.objects.all()
@@ -19,4 +19,8 @@ class PlaceViewSet(viewsets.ModelViewSet):
 class AuditViewSet(viewsets.ModelViewSet):
     queryset = Audit.objects.all()
     serializer_class = AuditSerializer
+
+class OrganizaiotnViewSet(viewsets.ModelViewSet):
+    queryset = Organization.objects.all()
+    serializer_class = OrganizationSerializer
 
